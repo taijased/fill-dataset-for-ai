@@ -1,26 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <BoltCards/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BoltCards from './components/BoltCards'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    BoltCards
   }
 }
 </script>
 <style lang="stylus">
+body 
+  margin 0
+  padding 0
+  overflow hidden
 #app
   font-family 'Avenir', Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
   text-align center
   color #2c3e50
-  margin-top 60px
+  display flex
+
+
 </style>

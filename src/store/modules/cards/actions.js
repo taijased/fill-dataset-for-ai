@@ -15,17 +15,17 @@ export function setControls({ commit }) {
     }
 }
 
-export function selectObject({ commit, state}, payload) {
+export function selectObject({ dispatch, state}, payload) {
     try {
-        console.log(payload + " | " + state.id);
-        // new Promise((resolve, reject) => {
-        //     CardsService.selectObject(state.object.id, payload)
-        //         .then(response => {
-        //             console.log(response);
-        //             resolve(response)
-        //         })
-        //         .catch(reject)
-        // })
+        new Promise((resolve, reject) => {
+            CardsService.selectObject(state.id, payload)
+                .then(response => {
+                    console.log(response);
+                    dispatch('setObject')
+                    resolve(response)
+                })
+                .catch(reject)
+        })
     } catch (error) {
         console.log(error + " | selectObject");
 
@@ -34,18 +34,15 @@ export function selectObject({ commit, state}, payload) {
 
 export function selectTrash({ commit, state, dispatch}) {
     try {
-        console.log("Дичь с этим ид :" + state.id);
-        dispatch('setObject')
-
-        // new Promise((resolve, reject) => {
-        //     CardsService.selectObject(state.id, 0)
-        //         .then(response => {
-        //             console.log(response);
-        //             dispatch('setObject')
-        //             resolve(response)
-        //         })
-        //         .catch(reject)
-        // })
+        new Promise((resolve, reject) => {
+            CardsService.selectObject(state.id, 0)
+                .then(response => {
+                    console.log(response);
+                    dispatch('setObject')
+                    resolve(response)
+                })
+                .catch(reject)
+        })
     } catch (error) {
         console.log(error + " | selectTrash");
     }
@@ -59,9 +56,6 @@ export function setObject({ commit, state , dispatch}) {
             commit("UPDATE_ID", id)
             const imageUrl = "http://api.mmwro.revealyan.info/images/" + id
             commit("UPDATE_CARD_IMAGE", imageUrl)
-            // if(state.objects.length < 4) {
-            //     dispatch('fetchObjectList')
-            // }
         } else {
             commit("UPDATE_CARD_IMAGE", null)
             console.log("no object");

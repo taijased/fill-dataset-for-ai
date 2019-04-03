@@ -64,9 +64,13 @@ export default {
             justify-content center
             align-items center
             .circle 
-                width 100px;
-                height 100px
-                border-radius 50%;
+                width 200px;
+                height 70px
+                background #27597A
+                color white
+                font-family 'Avenir', Helvetica, Arial, sans-serif
+                font-size 20px
+                border-radius 10px;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 display flex
                 flex-direction row

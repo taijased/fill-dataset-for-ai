@@ -26,6 +26,7 @@ body
   text-align center
   color #2c3e50
   display flex
+  background #E6F1F3
 
 
 </style>

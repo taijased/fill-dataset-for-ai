@@ -5,8 +5,7 @@ export function setControls({ commit }) {
         new Promise((resolve, reject) => {
             CardsService.getAllClasses()
                 .then(response => {
-                    console.log(response);
-                    // commit("UPDATE_CONTROLS");
+                    commit("UPDATE_CONTROLS", response.data);
                     resolve(response)
                 })
                 .catch(reject)
@@ -16,158 +15,74 @@ export function setControls({ commit }) {
     }
 }
 
-export function selectObject({ commit }, payload) {
+export function selectObject({ commit, state}, payload) {
     try {
-        console.log(payload);
+        console.log(payload + " | " + state.id);
         // new Promise((resolve, reject) => {
-        //     CardsService.selectObject(payload.id, payload.id_class)
+        //     CardsService.selectObject(state.object.id, payload)
         //         .then(response => {
         //             console.log(response);
-        //             // commit("UPDATE_CONTROLS");
         //             resolve(response)
         //         })
         //         .catch(reject)
         // })
     } catch (error) {
-        console.log(error + "");
+        console.log(error + " | selectObject");
+
     }
 }
 
-export function selectTrash({ commit }, payload) {
+export function selectTrash({ commit, state, dispatch}) {
     try {
-        new Promise((resolve, reject) => {
-            CardsService.selectObject(payload, 0)
-                .then(response => {
-                    console.log(response);
-                    // commit("UPDATE_CONTROLS");
-                    resolve(response)
-                })
-                .catch(reject)
-        })
+        console.log("Дичь с этим ид :" + state.id);
+        dispatch('setObject')
+
+        // new Promise((resolve, reject) => {
+        //     CardsService.selectObject(state.id, 0)
+        //         .then(response => {
+        //             console.log(response);
+        //             dispatch('setObject')
+        //             resolve(response)
+        //         })
+        //         .catch(reject)
+        // })
     } catch (error) {
-        console.log(error);
+        console.log(error + " | selectTrash");
     }
 }
 
-export function setImageUrl({ commit }, payload) {
+export function setObject({ commit, state , dispatch}) {
     try {
-        new Promise((resolve, reject) => {
-            CardsService.getImageCard(payload)
-                .then(response => {
-                    console.log(response);
-                    // commit("UPDATE_CARD_IMAGE");
-                    resolve(response)
-                })
-                .catch(reject)
-        })
+        console.log(state.objects);
+        if (state.objects.length > 0) {
+            let id = state.objects.pop()
+            commit("UPDATE_ID", id)
+            const imageUrl = "http://api.mmwro.revealyan.info/images/" + id
+            commit("UPDATE_CARD_IMAGE", imageUrl)
+            // if(state.objects.length < 4) {
+            //     dispatch('fetchObjectList')
+            // }
+        } else {
+            commit("UPDATE_CARD_IMAGE", null)
+            console.log("no object");
+        }
     } catch (error) {
-        console.log(error);
+        console.log(error + " | setObject");
     }
 }
 
-
-
-
-
-
-// export function fetchModelList({commit}) {
-//   try {
-//     new Promise((resolve, reject) => {
-//       ProjectService.fetchModelList()
-//         .then(response => {
-//           console.log(response.data);
-//           commit("UPDATE_MODEL_LIST", response.data.models);
-//           resolve(response)
-//         })
-//         .catch(error => {
-//           console.log("fetchModelList: " + error);
-//           reject(error)
-//         })
-//     })
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-
-// // export function setPositionX({ commit }, valueX) {
-// //   commit("UPDATE_POSITIONX", valueX);
-// // }
-// // export function setPositionY({ commit }, valueY) {
-// //   commit("UPDATE_POSITIONX", valueY);
-// // }
-// // export function setPositionZ({ commit }, valueZ) {
-// //   commit("UPDATE_POSITIONX", valueZ);
-// // }
-
-
-
-// export function fetchModelFromServer({commit}, payload) {
-//   try {
-//     new Promise((resolve, reject) => {
-//       ProjectService.fetchModelWithAliase(payload)
-//         .then(response => {
-//           console.log(response);
-//           commit("UPDATE_LOADING_STATUS", false);
-
-//           FileWorkerService.saveFileInBrowser(response.data)
-
-//           resolve(response)
-//         })
-//         .catch(error => {
-//           console.log("fetchModelFromServer: " + error);
-//           reject(error)
-//         })
-//     })
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-
-// export function setSizeSlider({commit}, payload) {
-//   WorkerWebGl.setResize(payload)
-//   commit("UPDATE_SIZE_SLIDER", payload)
-// }
-
-
-// export function setCameraPosition({commit}, payload) {
-//   let cameraPosition
-//   switch(payload) {
-//     case 1: 
-//         cameraPosition = {
-//             left: true,
-//             right: false, 
-//             top: false,
-//             free: false
-//         }
-//         break;
-//     case 2: 
-//         cameraPosition = {
-//           left: false,
-//           right: true, 
-//           top: false,
-//           free: false
-//         } 
-//         break;
-//     case 3: 
-//         cameraPosition = {
-//           left: false,
-//           right: false, 
-//           top: true,
-//           free: false
-//         } 
-//         break;
-//     case 4: 
-//         cameraPosition = {
-//           left: false,
-//           right: false, 
-//           top: false,
-//           free: true
-//         } 
-//         break;
-//     default: break
-//   }
-//   WorkerWebGl.setCameraPosition(payload)
-//   commit("UPDATE_CAMERA_POSITION", cameraPosition)
-// }
+export function fetchObjectList({commit, dispatch}) {
+  try {
+    new Promise((resolve, reject) => {
+        CardsService.getNonSelectedObject()
+            .then(response => {
+                commit("UPDATE_OBJECT_LIST", response.data);
+                dispatch("setObject")
+                resolve(response)
+            })
+            .catch(reject)
+    })
+  } catch (error) {
+    console.log(error + " | fetchObjectList");
+  }
+}

@@ -6,9 +6,9 @@ const CardsService = {
   getNonSelectedObject () {
     return Api.get('/objects')
   },
-  getImageCard (id) {
-    return Api.get('images/' + id)
-  },
+  // getImageCard (id) {
+  //   return Api.get('images/' + id)
+  // },
   selectObject(id, class_id) {
     return Api.get('objects/' + id + '/' + class_id)
   },

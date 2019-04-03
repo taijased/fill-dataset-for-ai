@@ -1,9 +1,13 @@
 <template lang="pug">
   .select-bolt
-    h1  {{title}}
+    // h1  {{title}}
     .cards(v-if="getImageUrl")
       i(@click="close", class="far fa-times-circle fa-5x")
       img(:src='getImageUrl')
+    .cards-default(v-else)
+      i(class="far fa-surprise fa-9x")
+      .cards-title Пустo
+      .btn-primary Загрузить еще
     SliderControl    
     
 </template>
@@ -13,21 +17,23 @@ import SliderControl from './SliderControl';
 import { mapGetters, mapActions} from 'vuex';
 
 export default {
-  data () {
-    return {
-      title: "Болт или гайка?"
-    }
-  },
   computed: {
     ...mapGetters({
-        getImageUrl: "cards/getImageUrl"
+        getImageUrl: "cards/getImageUrl",
+        getId: "cards/getId",
     })
   },
   methods: {
+    ...mapActions({
+      fetchObjectList: "cards/fetchObjectList",
+      selectTrash: "cards/selectTrash",
+    }),
     close() {
-      // GAVNO CLASS ID = 0
-      this.title = "Дичь!"
+      this.selectTrash()
     }
+  },
+  created () {
+    this.fetchObjectList()
   },
   components: {
     SliderControl
@@ -60,7 +66,12 @@ export default {
       color #E4746F
       &:active
         transform scale(0.9)
-
-
-
+  .cards-default
+    display flex
+    flex-direction column
+    justify-content center
+    align-items center
+    .cards-title 
+      font-size 40px
+      font-weight bold
 </style>

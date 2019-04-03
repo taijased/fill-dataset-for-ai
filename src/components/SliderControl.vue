@@ -5,18 +5,8 @@
             swiper-slide(
                 v-for="(item, index) in getControls", 
                 :key="'key-slider-' + index")
-                .circle(@click="selectObject({id: item, id_class: index})")
-                    h2 {{item}}
-            //- swiper-slide
-            //-     .circle
-            //-         img(src='../assets/gayka.png', alt='gayka')
-            //-         //- h2 Болт
-            //- swiper-slide
-            //-     .circle
-            //-         h2 empty
-            //- swiper-slide
-            //-     .circle
-            //-         img(src='../assets/bolt.png', alt='bolt')
+                .circle(@click="selectObject(item.id)")
+                    h4 {{item.name}}
 </template>
 
 <script>
@@ -33,7 +23,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            getControls: "cards/getControls"
+            getControls: "cards/getControls",
         })
     },
     methods: {
